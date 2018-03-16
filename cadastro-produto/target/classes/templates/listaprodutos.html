@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+		<meta charset="UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Cadastro de Produto</title>
+	
+		<link rel="stylesheet" type="text/css" href="http://localhost:8080/layout/stylesheets/vendors.min.css"/>
+		<link rel="stylesheet" type="text/css" href="http://localhost:8080/layout/stylesheets/produto.min.css"/>
+		<link rel="stylesheet" type="text/css" href="http://localhost:8080/layout/stylesheets/application.css"/>
+		<link rel="stylesheet" type="text/css" href="http://localhost:8080/stylesheets/produtoContext.css"/>
+		<link rel="stylesheet" type="text/css" href="http://localhost:8080/stylesheets/vendors/bootstrap-datepicker.standalone.min.css"/>
+		<link rel="shortcut icon" th:href="@{/images/favicon.png}"/>
+	</head>
+	<body>
+		<section layout:fragment="conteudo">
+			<div class="aw-layout-loading  js-loading-overlay">
+				<div class="aw-layout-loading__container">
+					<span class="aw-balls-spinner"></span>
+				</div>
+			</div>
+			<div class="aw-layout-page">
+				<nav class="navbar  navbar-fixed-top  navbar-default  js-sticky-reference" id="main-navbar" style="background-color: #205a5f !important">
+				  <div class="container-fluid">
+				  </div>
+				</nav>
+				<div class="page-header">
+					<div class="container-fluid">
+						<h1>
+							Cadastro de produto
+						</h1>
+					</div>
+				</div>
+				<div class="container-fluid">
+				<th:block th:include="fragments/MensagemSucesso"></th:block>
+				<form method="POST" th:object="${produto}" th:action="@{/produtoController/salvar}"  class="form-vertical  js-form-loading" enctype="multipart/form-data">
+					<th:block th:include="fragments/MensagensErroValidacao"></th:block>
+					<input type="hidden" th:field="*{id}">
+					<div class="row">
+						<div class="form-group col-sm-4">
+							<label for="nome1">Nome</label>
+							<input id="nome1" type="text"class="form-control" th:field="*{nome}"/>
+						</div>
+						
+						<div class="form-group col-sm-4 date">
+							<label for="event_date">Data</label>
+							<input type="text"class="form-control js-date" name="event_date" id="event_date" th:field="*{data}" autocomplete="off" />
+						</div>
+						
+						<div class="form-group  col-sm-4" style="margin-top: 14px">
+						    <label for="exampleFormControlFile1"></label>
+						    <a class="bw-upload-form-file"><input id="upload-select" type="file" name="file"  accept=".jpg,.jpeg,.png" /></a>
+					   </div>
+					</div>
+					<div class="form-group">
+						<label for="descricao">Descrição</label>
+						<textarea id="descricao" rows="3" class="form-control" th:field="*{descricao}"  ></textarea>
+					</div>
+					<div class="row">
+					</div>
+						<div class="form-group">
+						<button class="btn  btn-primary" type="submit">salvar</button>
+					</div>
+				</form>
+				</div>
+				<div class="container-fluid">
+					<div id="listaDeConvidados table-responsive">
+						<table class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th>Nome</th>
+									<th>Descricao</th>
+									<th>Data</th>
+									<th style="width: 70px;">Editar</th>
+									<th style="width: 70px;">Excluir</th>
+								</tr>
+							</thead>
+							<tr th:each="produto : ${produtos}">
+								<td><span th:text="${produto.nome}"></span></td>
+								<td><span th:text="${produto.descricao}"></span></td>
+								<td><span th:text="${produto.data}"></span></td>
+								<td>
+									<form method="POST" th:action="@{/produtoController/Editar/{id}(id=${produto.id})}" class="form-vertical  js-form-loading">
+										<div class="form-group">
+											<button class="btn  btn-primary" type="submit">Editar</button>
+										</div>
+									</form>
+						      	</td>									
+								<td>
+								<form method="POST" th:action="@{/produtoController/Excluir/{id}(id=${produto.id})}" class="form-vertical  js-form-loading">
+									<div class="form-group">
+										<button class="btn btn-danger" type="submit">Exluir</button>
+									</div>
+								</form>
+						      	</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<footer class="aw-layout-footer  js-content">
+					<div class="container-fluid">
+						<span class="aw-footer-disclaimer">&copy; Todos os direitos reservados.</span>
+					</div>
+				</footer>
+			</div>
+			<div class="aw-search-modal  js-search-modal">
+				<form action="#" class="aw-search-modal__form">
+					<input class="aw-search-modal__input  js-search-modal-input" type="text" placeholder="O que você está procurando?"/>
+					<div class="aw-search-modal__input-icon">
+						<i class="glyphicon  glyphicon-search  js-search-modal-go"></i>
+					</div>
+				</form>
+				<div class="aw-search-modal__controls">
+					<i class="glyphicon glyphicon-remove  js-search-modal-close"></i>
+				</div>
+			</div>
+		</section>			
+		<th:block layout:fragment="javascript-extra">
+			<script src="http://localhost:8080/layout/javascripts/vendors.min.js"></script>
+			<script src="http://localhost:8080/layout/javascripts/produto.min.js"></script>
+			<script src="http://localhost:8080/javascripts/vendors/jquery.masknumber.min.js"></script>
+			<script src="http://localhost:8080/javascripts/vendors/jquery.mask.min.js"></script>
+			<script src="http://localhost:8080/javascripts/vendors/bootstrap-datepicker.min.js"></script>
+			<script src="http://localhost:8080/javascripts/vendors/bootstrap-datepicker.pt-BR.min.js"></script>
+			<script src="http://localhost:8080/javascripts/vendors/numeral.min.js"></script>
+			<script src="http://localhost:8080/javascripts/vendors/pt-br.min.js"></script>
+			<script src="http://localhost:8080/javascripts/vendors/upload.min.js"></script>
+			<script src="http://localhost:8080/javascripts/vendors/handlebars.min.js"></script>
+			<script src="http://localhost:8080/javascripts/produtoContext.js"></script>
+			<script src="http://localhost:8080/javascripts/produtoContext.dialogo-excluir.js"></script>
+			<script src="http://localhost:8080/javascripts/cerveja.upload-foto.js"></script>
+		</th:block>
+	</body>
+</html>
